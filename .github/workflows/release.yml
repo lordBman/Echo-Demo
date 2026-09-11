@@ -122,7 +122,9 @@ jobs:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
-          ./gradlew android:assembleRelease bundleRelease\
+          ./gradlew
+            assembleRelease \
+            bundleRelease \
             -PversionName=${{ steps.version.outputs.version }} \
             -PversionCode=${{ steps.version.outputs.version_code }}
 
