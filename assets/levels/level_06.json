@@ -1,0 +1,108 @@
+{
+  "id": "level_06",
+  "name": "Cadence",
+  "chapter": 2,
+  "hint": "Stand at the switch and press E: the door opens for only 4 seconds. Record yourself pressing E again and again, then ride the ferry while your Echo keeps the door open. Cross the laser between its pulses.",
+  "echoLimit": 1,
+  "recordingDuration": 10,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 20,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 30,
+      "y": 1,
+      "width": 6,
+      "height": 2
+    }
+  ],
+  "objects": [
+    {
+      "type": "switch",
+      "id": "switch1",
+      "position": [
+        6,
+        1
+      ],
+      "holdTime": 4
+    },
+    {
+      "type": "hazard",
+      "id": "spikes",
+      "position": [
+        13,
+        1
+      ],
+      "width": 8,
+      "height": 0.4
+    },
+    {
+      "type": "movingPlatform",
+      "id": "ferry",
+      "position": [
+        9.5,
+        1.5
+      ],
+      "target": [
+        16.5,
+        1.5
+      ],
+      "width": 2.5,
+      "height": 0.4,
+      "speed": 3,
+      "waitTime": 0.6,
+      "mode": "loop"
+    },
+    {
+      "type": "door",
+      "id": "door1",
+      "position": [
+        21,
+        1
+      ],
+      "height": 4,
+      "trigger": "switch1"
+    },
+    {
+      "type": "hazard",
+      "id": "laser",
+      "position": [
+        25,
+        1
+      ],
+      "width": 0.6,
+      "height": 4,
+      "trigger": "cycle(3, 1.2, 0)"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        33,
+        3
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 40
+    },
+    {
+      "type": "noDeaths"
+    }
+  ]
+}

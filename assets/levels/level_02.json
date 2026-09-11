@@ -1,0 +1,89 @@
+{
+  "id": "level_02",
+  "name": "Closing Window",
+  "chapter": 2,
+  "hint": "The door stays open for only 1.5 seconds after the plate is pressed. Be waiting at the door before your Echo arrives.",
+  "echoLimit": 1,
+  "recordingDuration": 10,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 21,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 26,
+      "y": 1,
+      "width": 4,
+      "height": 2
+    },
+    {
+      "x": 31,
+      "y": 1,
+      "width": 6,
+      "height": 4
+    }
+  ],
+  "objects": [
+    {
+      "type": "pressurePlate",
+      "id": "plate1",
+      "position": [
+        8,
+        1
+      ]
+    },
+    {
+      "type": "hazard",
+      "id": "spikes",
+      "position": [
+        14.5,
+        1
+      ],
+      "width": 3,
+      "height": 0.4
+    },
+    {
+      "type": "door",
+      "id": "door1",
+      "position": [
+        22,
+        1
+      ],
+      "height": 4,
+      "trigger": "timed(plate1, 1.5)"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        34,
+        5
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 25
+    },
+    {
+      "type": "maxEchoes",
+      "value": 1
+    },
+    {
+      "type": "noDeaths"
+    }
+  ]
+}

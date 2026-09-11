@@ -1,0 +1,115 @@
+{
+  "id": "level_05",
+  "name": "Heavy Lifting",
+  "chapter": 3,
+  "hint": "Boxes stay where you leave them. Some things your present self has to do first.",
+  "echoLimit": 1,
+  "recordingDuration": 10,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "width": 2,
+      "height": 2
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "width": 6,
+      "height": 0.5
+    },
+    {
+      "x": 14,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 26,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 31,
+      "y": 1,
+      "width": 6,
+      "height": 2
+    }
+  ],
+  "objects": [
+    {
+      "type": "pushableBox",
+      "id": "box",
+      "position": [
+        11,
+        5.5
+      ],
+      "size": 1.2
+    },
+    {
+      "type": "pressurePlate",
+      "id": "plateA",
+      "position": [
+        13,
+        5.5
+      ]
+    },
+    {
+      "type": "door",
+      "id": "door1",
+      "position": [
+        15,
+        1
+      ],
+      "height": 4,
+      "trigger": "plateA"
+    },
+    {
+      "type": "pressurePlate",
+      "id": "plateB",
+      "position": [
+        22,
+        1
+      ]
+    },
+    {
+      "type": "door",
+      "id": "door2",
+      "position": [
+        27,
+        1
+      ],
+      "height": 4,
+      "trigger": "plateB"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        34,
+        3
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 45
+    },
+    {
+      "type": "maxEchoes",
+      "value": 1
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "level_03",
+  "name": "Two Plates",
+  "chapter": 3,
+  "hint": "Both plates must be held at once. Record a walk to plate A and press F. Then record a walk to plate B and press F. Keys 1-5 respawn earlier recordings.",
+  "echoLimit": 2,
+  "recordingDuration": 10,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "width": 4,
+      "height": 1.5
+    },
+    {
+      "x": 20,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 25,
+      "y": 1,
+      "width": 4,
+      "height": 2
+    },
+    {
+      "x": 30,
+      "y": 1,
+      "width": 6,
+      "height": 4
+    }
+  ],
+  "objects": [
+    {
+      "type": "pressurePlate",
+      "id": "plateA",
+      "position": [
+        8,
+        1
+      ]
+    },
+    {
+      "type": "pressurePlate",
+      "id": "plateB",
+      "position": [
+        14,
+        2.5
+      ]
+    },
+    {
+      "type": "door",
+      "id": "door1",
+      "position": [
+        21,
+        1
+      ],
+      "height": 4,
+      "trigger": "all(plateA, plateB)"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        33,
+        5
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 40
+    },
+    {
+      "type": "maxEchoes",
+      "value": 2
+    },
+    {
+      "type": "noRewind"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "id": "level_07",
+  "name": "Patrol",
+  "chapter": 4,
+  "hint": "Land on top of the patrol to defeat it; that opens the first door for good. The last door opens when something dies in the pit: record a walk into it and let your Echo make the sacrifice.",
+  "echoLimit": 1,
+  "recordingDuration": 10,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 18,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 26,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 31,
+      "y": 1,
+      "width": 6,
+      "height": 2
+    }
+  ],
+  "objects": [
+    {
+      "type": "enemy",
+      "id": "enemy1",
+      "position": [
+        10,
+        1
+      ],
+      "patrolTo": 16,
+      "speed": 2
+    },
+    {
+      "type": "door",
+      "id": "door1",
+      "position": [
+        19,
+        1
+      ],
+      "height": 4,
+      "trigger": "enemy1"
+    },
+    {
+      "type": "hazard",
+      "id": "pit",
+      "position": [
+        23,
+        1
+      ],
+      "width": 2,
+      "height": 0.5
+    },
+    {
+      "type": "door",
+      "id": "door2",
+      "position": [
+        27,
+        1
+      ],
+      "height": 4,
+      "trigger": "pit"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        34,
+        3
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 40
+    },
+    {
+      "type": "noDeaths"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "id": "level_04",
+  "name": "The Lift",
+  "chapter": 3,
+  "hint": "The lift rises only while the plate is held down. Let your past self hold it.",
+  "echoLimit": 1,
+  "recordingDuration": 10,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 20,
+      "y": 1,
+      "width": 8,
+      "height": 7
+    }
+  ],
+  "objects": [
+    {
+      "type": "pressurePlate",
+      "id": "plate1",
+      "position": [
+        8,
+        1
+      ]
+    },
+    {
+      "type": "movingPlatform",
+      "id": "lift",
+      "position": [
+        18.5,
+        0.5
+      ],
+      "target": [
+        18.5,
+        7.5
+      ],
+      "width": 3,
+      "height": 0.5,
+      "speed": 3,
+      "trigger": "plate1"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        24,
+        8
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 30
+    },
+    {
+      "type": "maxEchoes",
+      "value": 1
+    }
+  ]
+}

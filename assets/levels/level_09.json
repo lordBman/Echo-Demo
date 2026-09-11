@@ -1,0 +1,105 @@
+{
+  "id": "level_09",
+  "name": "Inheritance",
+  "chapter": 7,
+  "hint": "Press F while recording: the Echo you spawn becomes part of that recording. Record plate A. Then record: press F, go to plate B. Then record: press F, go to plate C. One F replays the whole team.",
+  "echoLimit": 3,
+  "recordingDuration": 10,
+  "echoInheritance": true,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "width": 4,
+      "height": 1.5
+    },
+    {
+      "x": 17,
+      "y": 1,
+      "width": 3,
+      "height": 3
+    },
+    {
+      "x": 22,
+      "y": 6,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 27,
+      "y": 1,
+      "width": 4,
+      "height": 2
+    },
+    {
+      "x": 32,
+      "y": 1,
+      "width": 6,
+      "height": 4
+    }
+  ],
+  "objects": [
+    {
+      "type": "pressurePlate",
+      "id": "plateA",
+      "position": [
+        8,
+        1
+      ]
+    },
+    {
+      "type": "pressurePlate",
+      "id": "plateB",
+      "position": [
+        14,
+        2.5
+      ]
+    },
+    {
+      "type": "pressurePlate",
+      "id": "plateC",
+      "position": [
+        18.5,
+        4
+      ]
+    },
+    {
+      "type": "door",
+      "id": "door1",
+      "position": [
+        23,
+        1
+      ],
+      "height": 5,
+      "trigger": "all(plateA, plateB, plateC)"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        35,
+        5
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 60
+    },
+    {
+      "type": "maxRewinds",
+      "value": 2
+    }
+  ]
+}

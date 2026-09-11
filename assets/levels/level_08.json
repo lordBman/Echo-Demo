@@ -1,0 +1,97 @@
+{
+  "id": "level_08",
+  "name": "Loops",
+  "chapter": 5,
+  "hint": "Echoes here loop forever. A short recording makes a rhythm; both doors follow it.",
+  "echoLimit": 1,
+  "recordingDuration": 10,
+  "loopingEchoes": true,
+  "playerSpawn": [
+    3,
+    1
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 1
+    },
+    {
+      "x": 13,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 27,
+      "y": 5,
+      "width": 2,
+      "height": 4
+    },
+    {
+      "x": 32,
+      "y": 1,
+      "width": 5,
+      "height": 2
+    }
+  ],
+  "objects": [
+    {
+      "type": "pressurePlate",
+      "id": "plate1",
+      "position": [
+        8,
+        1
+      ]
+    },
+    {
+      "type": "door",
+      "id": "door1",
+      "position": [
+        14,
+        1
+      ],
+      "height": 4,
+      "trigger": "timed(plate1, 1.5)"
+    },
+    {
+      "type": "hazard",
+      "id": "spikes",
+      "position": [
+        19.5,
+        1
+      ],
+      "width": 3,
+      "height": 0.4
+    },
+    {
+      "type": "door",
+      "id": "door2",
+      "position": [
+        28,
+        1
+      ],
+      "height": 4,
+      "trigger": "timed(plate1, 1.5)"
+    },
+    {
+      "type": "exit",
+      "id": "exit",
+      "position": [
+        34.5,
+        3
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "type": "maxTime",
+      "value": 30
+    },
+    {
+      "type": "maxRecording",
+      "value": 3
+    }
+  ]
+}
