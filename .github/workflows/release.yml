@@ -116,13 +116,13 @@ jobs:
       # ==========================================
 
       - name: Build Android APK
-        env:
-          SIGNING_STORE_FILE: android/keystore.jks
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        #env:
+        #  SIGNING_STORE_FILE: android/keystore.jks
+        #  SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        #  SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+        #  SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
-          ./gradlew android:assembleRelease \
+          ./gradlew assembleRelease \
             -PversionName=${{ steps.version.outputs.version }} \
             -PversionCode=${{ steps.version.outputs.version_code }}
 
