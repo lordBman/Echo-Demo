@@ -116,11 +116,11 @@ jobs:
       # ==========================================
 
       - name: Build Android APK
-        #env:
-        #  SIGNING_STORE_FILE: android/keystore.jks
-        #  SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-        #  SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-        #  SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        env:
+          SIGNING_STORE_FILE: android/keystore.jks
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
           ./gradlew assembleRelease \
             -PversionName=${{ steps.version.outputs.version }} \
@@ -155,7 +155,7 @@ jobs:
             exit 1
           fi
 
-          cp "$APK" "release/Echo-demo-${VERSION}-android.apk"
+          cp "android/build/outputs/apk/release/app-release.apk" "release/Echo-demo-${VERSION}-android.apk"
 
           echo "Release files:"
           ls -lh release
