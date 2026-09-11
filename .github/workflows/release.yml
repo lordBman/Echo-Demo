@@ -117,7 +117,7 @@ jobs:
 
       - name: Build Android APK
         env:
-          SIGNING_STORE_FILE: android/keystore.jks
+          SIGNING_STORE_FILE: keystore.jks
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
