@@ -117,7 +117,7 @@ jobs:
 
       - name: Build Android APK
         env:
-          SIGNING_STORE_FILE: keystore.jks
+          SIGNING_STORE_FILE: android/keystore.jks
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -148,7 +148,7 @@ jobs:
           cp "$DESKTOP_JAR" "release/Echo-demo-${VERSION}-desktop.jar"
 
           # Find Android APK
-          APK=$(find android/build/outputs/bundle/release -maxdepth 1 -type f -name "*.apk" | head -n 1)
+          APK=$(find android/build/outputs/apk/release -maxdepth 1 -type f -name "*.apk" | head -n 1)
 
           if [ -z "$APK" ]; then
             echo "Android APK not found!"
