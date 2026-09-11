@@ -1,0 +1,161 @@
+name: LibGDX Release CI
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ==========================================
+      # CHECKOUT
+      # ==========================================
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ==========================================
+      # JAVA
+      # ==========================================
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # ==========================================
+      # VERSION
+      # ==========================================
+
+      - name: Determine Version
+        id: version
+        shell: bash
+        run: |
+          # ==========================================
+          # CHANGE THESE WHEN STARTING A NEW VERSION
+          # ==========================================
+
+          MAJOR=1
+          MINOR=0
+
+          # ==========================================
+          # Find latest tag for this major.minor
+          # ==========================================
+
+          LATEST_TAG=$(git tag -l "v${MAJOR}.${MINOR}.*" --sort=-v:refname | head -n 1)
+
+          if [ -z "$LATEST_TAG" ]; then
+            PATCH=0
+          else
+            PATCH=$(echo "$LATEST_TAG" | sed -E 's/^v[0-9]+\.[0-9]+\.([0-9]+)$/\1/')
+            PATCH=$((PATCH + 1))
+          fi
+
+          VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          TAG="v${VERSION}"
+
+          # Android versionCode
+          VERSION_CODE=$((GITHUB_RUN_NUMBER + 100))
+
+          echo "Version: $VERSION"
+          echo "Tag: $TAG"
+          echo "Version Code: $VERSION_CODE"
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+
+      # ==========================================
+      # CREATE GIT TAG
+      # ==========================================
+
+      - name: Create Git Tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag "$TAG"
+          git push origin "$TAG"
+
+      # ==========================================
+      # BUILD DESKTOP JAR
+      # ==========================================
+
+      - name: Build Desktop
+        run: |
+          ./gradlew lwjgl3:jar
+
+      # ==========================================
+      # BUILD ANDROID APK
+      # ==========================================
+
+      - name: Build Android APK
+        run: |
+          ./gradlew android:assembleRelease \
+            -PversionName=${{ steps.version.outputs.version }} \
+            -PversionCode=${{ steps.version.outputs.version_code }}
+
+      # ==========================================
+      # RENAME ARTIFACTS
+      # ==========================================
+
+      - name: Prepare Release Files
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          mkdir -p release
+
+          # Find the desktop JAR
+          DESKTOP_JAR=$(find lwjgl3/build/libs -maxdepth 1 -type f -name "*.jar" | head -n 1)
+
+          if [ -z "$DESKTOP_JAR" ]; then
+            echo "Desktop JAR not found!"
+            exit 1
+          fi
+
+          cp "$DESKTOP_JAR" "release/MyGame-${VERSION}-PC.jar"
+
+          # Find Android APK
+          APK=$(find android/build/outputs/apk/release -maxdepth 1 -type f -name "*.apk" | head -n 1)
+
+          if [ -z "$APK" ]; then
+            echo "Android APK not found!"
+            exit 1
+          fi
+
+          cp "$APK" "release/MyGame-${VERSION}-Android.apk"
+
+          echo "Release files:"
+          ls -lh release
+
+      # ==========================================
+      # CREATE GITHUB RELEASE
+      # ==========================================
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Release ${{ steps.version.outputs.tag }}
+          generate_release_notes: true
+          files: |
+            release/MyGame-${{ steps.version.outputs.version }}-PC.jar
+            release/MyGame-${{ steps.version.outputs.version }}-Android.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
