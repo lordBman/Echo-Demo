@@ -100,17 +100,6 @@ jobs:
         run: |
           ./gradlew lwjgl3:jar
 
-
-      # -----------------------------------------
-      # SIGNING
-      # -----------------------------------------
-
-      #- name: Decode Keystore
-      #  env:
-      #    ENCODED_STRING: ${{ secrets.SIGNING_KEY_STORE_BASE64 }}
-      #  run: |
-      #    echo "$ENCODED_STRING" | base64 -d > android/keystore.jks
-
       # ==========================================
       # BUILD ANDROID APK
       # ==========================================
@@ -137,7 +126,7 @@ jobs:
           BUILD_TOOLS_VERSION: "34.0.0"
 
 
-        # ==========================================
+      # ==========================================
       # RENAME ARTIFACTS
       # ==========================================
 
