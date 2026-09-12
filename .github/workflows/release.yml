@@ -117,7 +117,7 @@ jobs:
 
       - name: Build Android APK
         env:
-          SIGNING_STORE_FILE: keystore.jks
+          SIGNING_STORE_FILE: android/keystore.jks
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -126,7 +126,23 @@ jobs:
             -PversionName=${{ steps.version.outputs.version }} \
             -PversionCode=${{ steps.version.outputs.version_code }}
 
-      # ==========================================
+      - name: Sign Android APK
+        uses: kevin-david/zipalign-sign-android-release@v1.1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY_STORE_BASE64 }}
+          alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          zipAlign: true
+        env:
+          # override default build-tools version (32.0.0) -- optional
+          BUILD_TOOLS_VERSION: "30.0.2"
+
+
+        # ==========================================
       # RENAME ARTIFACTS
       # ==========================================
 
@@ -147,15 +163,7 @@ jobs:
 
           cp "$DESKTOP_JAR" "release/Echo-demo-${VERSION}-desktop.jar"
 
-          # Find Android APK
-          APK=$(find android/build/outputs/apk/release -maxdepth 1 -type f -name "*.apk" | head -n 1)
-
-          if [ -z "$APK" ]; then
-            echo "Android APK not found!"
-            exit 1
-          fi
-
-          cp "android/build/outputs/apk/release/app-release.apk" "release/Echo-demo-${VERSION}-android.apk"
+          cp ${{steps.sign_app.outputs.signedReleaseFile}} "release/Echo-demo-${VERSION}-android.apk"
 
           echo "Release files:"
           ls -lh release
