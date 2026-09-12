@@ -116,11 +116,6 @@ jobs:
       # ==========================================
 
       - name: Build Android APK
-        env:
-          SIGNING_STORE_FILE: android/keystore.jks
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
           ./gradlew assembleRelease \
             -PversionName=${{ steps.version.outputs.version }} \
@@ -131,7 +126,7 @@ jobs:
         # ID used to access action output
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/release
+          releaseDirectory: android/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY_STORE_BASE64 }}
           alias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
