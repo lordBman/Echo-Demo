@@ -122,7 +122,7 @@ jobs:
             -PversionCode=${{ steps.version.outputs.version_code }}
 
       - name: Sign Android APK
-        uses: kevin-david/zipalign-sign-android-release@v1.1
+        uses: r0adkll/sign-android-release@v1
         # ID used to access action output
         id: sign_app
         with:
@@ -131,7 +131,7 @@ jobs:
           alias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          zipAlign: true
+          # zipAlign: true
         #env:
           # override default build-tools version (32.0.0) -- optional
           #BUILD_TOOLS_VERSION: "30.0.2"
