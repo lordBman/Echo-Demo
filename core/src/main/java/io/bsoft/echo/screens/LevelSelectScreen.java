@@ -1,9 +1,11 @@
 package io.bsoft.echo.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.bsoft.echo.EchoGame;
@@ -58,7 +60,10 @@ public final class LevelSelectScreen extends ScreenAdapter {
             }
             y -= 46f;
         }
-        canvas.text(game.assets().font, "UP/DOWN select   ENTER play   ESC back   [U] unlock all (dev)",
+
+        boolean isAndroid = Gdx.app.getType() == Application.ApplicationType.Android;
+        String prompt = isAndroid ? "tap to select   tap again to play   ESC back" : "UP/DOWN select   ENTER play   ESC back   [U] unlock all (dev)";
+        canvas.text(game.assets().font, prompt,
                 UiCanvas.WIDTH / 2f, 50f, Align.center, Palette.UI_DIM, 1f);
         canvas.end();
     }
@@ -71,7 +76,30 @@ public final class LevelSelectScreen extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
             selected = (selected + n - 1) % n;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+
+        boolean confirmed = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+
+        if (Gdx.input.justTouched()) {
+            float tx = Gdx.input.getX();
+            float ty = Gdx.input.getY();
+            canvas.viewport().unproject(temp.set(tx, ty));
+
+            float entryY = UiCanvas.HEIGHT - 120f;
+            float left = 160f;
+            for (int i = 0; i < n; i++) {
+                if (temp.x > left - 20f && temp.x < UiCanvas.WIDTH - left + 20f && Math.abs(temp.y - (entryY - 10f)) < 20f) {
+                    if (selected == i) {
+                        confirmed = true;
+                    } else {
+                        selected = i;
+                    }
+                    break;
+                }
+                entryY -= 46f;
+            }
+        }
+
+        if (confirmed) {
             if (game.isUnlocked(selected) || devUnlockAll) {
                 game.startLevel(selected);
             }
@@ -84,6 +112,7 @@ public final class LevelSelectScreen extends ScreenAdapter {
         }
     }
 
+    private final Vector2 temp = new Vector2();
     private boolean devUnlockAll;
 
     @Override

@@ -1,5 +1,7 @@
 package io.bsoft.echo.ui;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Align;
 import io.bsoft.echo.echo.Echo;
@@ -100,6 +102,7 @@ public final class Hud implements GameEventListener {
     }
 
     private void drawRecording() {
+        boolean isAndroid = Gdx.app.getType() == Application.ApplicationType.Android;
         EchoController controller = world.echoController();
         float y = UiCanvas.HEIGHT - MARGIN - 78f;
         float barW = 180f;
@@ -117,20 +120,24 @@ public final class Hud implements GameEventListener {
         } else if (controller.hasRecording()) {
             EchoRecording rec = controller.lastRecording();
             sb.setLength(0);
-            sb.append(String.format("RECORDING READY  %.1fs   [F] spawn echo", rec.duration()));
+            String spawnPrompt = isAndroid ? "spawn echo" : "[F] spawn echo";
+            sb.append(String.format("RECORDING READY  %.1fs   %s", rec.duration(), spawnPrompt));
             canvas.text(assets.font, sb, MARGIN, y, Align.left, Palette.UI_TEXT, 0.9f);
-            canvas.text(assets.font, "[Q] record again", MARGIN, y - 22f, Align.left, Palette.UI_DIM, 1f);
+            String againPrompt = isAndroid ? "record again" : "[Q] record again";
+            canvas.text(assets.font, againPrompt, MARGIN, y - 22f, Align.left, Palette.UI_DIM, 1f);
             if (controller.history().size > 1) {
                 sb.setLength(0);
                 sb.append("HISTORY ");
                 for (int i = 0; i < controller.history().size; i++) {
-                    sb.append(" [").append(i + 1).append("] ")
+                    String slot = isAndroid ? String.valueOf(i + 1) : "[" + (i + 1) + "]";
+                    sb.append(" ").append(slot).append(" ")
                             .append(String.format("%.1fs", controller.history().get(i).duration()));
                 }
                 canvas.text(assets.font, sb, MARGIN, y - 44f, Align.left, Palette.UI_DIM, 1f);
             }
         } else {
-            canvas.text(assets.font, "[Q] start recording", MARGIN, y, Align.left, Palette.UI_DIM, 1f);
+            String startPrompt = isAndroid ? "start recording" : "[Q] start recording";
+            canvas.text(assets.font, startPrompt, MARGIN, y, Align.left, Palette.UI_DIM, 1f);
         }
     }
 
@@ -163,7 +170,10 @@ public final class Hud implements GameEventListener {
         canvas.rect(UiCanvas.WIDTH / 2f - maxWidth / 2f - pad, top - boxH, maxWidth + pad * 2f, boxH, Color.BLACK,
                 0.55f * alpha);
         canvas.textWrapped(assets.font, hint, UiCanvas.WIDTH / 2f, top - pad, maxWidth, Palette.UI_TEXT, alpha);
-        canvas.text(assets.font, "[H] hint", UiCanvas.WIDTH / 2f, top - pad - textHeight - 6f, Align.center,
+
+        boolean isAndroid = Gdx.app.getType() == Application.ApplicationType.Android;
+        String hintPrompt = isAndroid ? "hint" : "[H] hint";
+        canvas.text(assets.font, hintPrompt, UiCanvas.WIDTH / 2f, top - pad - textHeight - 6f, Align.center,
                 Palette.UI_DIM, alpha * 0.8f);
     }
 
