@@ -1,9 +1,11 @@
 package io.bsoft.echo.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.bsoft.echo.EchoGame;
@@ -50,7 +52,10 @@ public final class MainMenuScreen extends ScreenAdapter {
             canvas.text(game.assets().fontLarge, label, cx, y, Align.center, color, 1f);
             y -= 48f;
         }
-        canvas.text(game.assets().font, "UP/DOWN select   ENTER confirm", cx, 70f, Align.center, Palette.UI_DIM,
+
+        boolean isAndroid = Gdx.app.getType() == Application.ApplicationType.Android;
+        String prompt = isAndroid ? "tap to select   tap again to confirm" : "UP/DOWN select   ENTER confirm";
+        canvas.text(game.assets().font, prompt, cx, 70f, Align.center, Palette.UI_DIM,
                 0.7f + 0.3f * (float) Math.sin(time * 2f));
         canvas.end();
     }
@@ -62,7 +67,29 @@ public final class MainMenuScreen extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
             selected = (selected + OPTIONS.length - 1) % OPTIONS.length;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+
+        boolean confirmed = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+
+        if (Gdx.input.justTouched()) {
+            float tx = Gdx.input.getX();
+            float ty = Gdx.input.getY();
+            canvas.viewport().unproject(temp.set(tx, ty));
+
+            float menuY = UiCanvas.HEIGHT / 2f + 20f;
+            for (int i = 0; i < OPTIONS.length; i++) {
+                if (Math.abs(temp.x - UiCanvas.WIDTH / 2f) < 200f && Math.abs(temp.y - (menuY - 20f)) < 24f) {
+                    if (selected == i) {
+                        confirmed = true;
+                    } else {
+                        selected = i;
+                    }
+                    break;
+                }
+                menuY -= 48f;
+            }
+        }
+
+        if (confirmed) {
             switch (selected) {
                 case 0 -> game.startLevel(game.firstUnfinishedLevel());
                 case 1 -> game.showLevelSelect();
@@ -73,6 +100,8 @@ public final class MainMenuScreen extends ScreenAdapter {
             Gdx.app.exit();
         }
     }
+
+    private final Vector2 temp = new Vector2();
 
     @Override
     public void resize(int width, int height) {

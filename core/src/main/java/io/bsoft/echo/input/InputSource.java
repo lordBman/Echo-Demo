@@ -32,6 +32,11 @@ public interface InputSource {
     /** Reset / rewind the attempt (press event). */
     boolean reset();
 
+    /** Pause the game (press event). */
+    default boolean pauseJustPressed() {
+        return false;
+    }
+
     /**
      * Spawn an Echo from the recording history (press event): 0 = most recent, 1 = the one
      * before, ... or -1 when nothing was pressed this tick.
@@ -45,6 +50,10 @@ public interface InputSource {
      * so a single tap is never applied to more than one fixed step.
      */
     default void consumePresses() {
+    }
+
+    /** When disabled (e.g. paused) the source reports no input at all. */
+    default void setEnabled(boolean enabled) {
     }
 
     /** Convenience: -1, 0 or +1 horizontal axis derived from left/right. */

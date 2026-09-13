@@ -1,5 +1,7 @@
 package io.bsoft.echo.ui;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
@@ -72,8 +74,14 @@ public final class ResultsOverlay {
             }
         }
         y -= 30f;
-        String prompt = hasNext ? "[ENTER] Next level     [R] Retry     [L] Level select"
-                : "[R] Retry     [L] Level select";
+        boolean isAndroid = Gdx.app.getType() == Application.ApplicationType.Android;
+        String prompt;
+        if (isAndroid) {
+            prompt = hasNext ? "Next level     Retry     Level select" : "Retry     Level select";
+        } else {
+            prompt = hasNext ? "[ENTER] Next level     [R] Retry     [L] Level select"
+                    : "[R] Retry     [L] Level select";
+        }
         canvas.text(assets.font, prompt, cx, Math.max(y, 60f), Align.center, Palette.UI_TEXT, appear);
         canvas.end();
     }
