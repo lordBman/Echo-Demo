@@ -2,6 +2,7 @@ package io.bsoft.echo.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import io.bsoft.echo.input.TouchInputSource;
@@ -107,21 +108,29 @@ public final class TouchOverlay {
         canvas.circle(joystickKnob.x, joystickKnob.y, KNOB_RADIUS, Color.WHITE, 0.4f);
 
         // Action Buttons
-        drawButton(JUMP_X, JUMP_Y, "JUMP", Palette.PLAYER);
-        drawButton(RECORD_X, RECORD_Y, "RECORD", Palette.RECORDING);
-        drawButton(SPAWN_X, SPAWN_Y, "ECHO", Palette.UI_TEXT);
+        drawButton(JUMP_X, JUMP_Y, "JUMP", Palette.PLAYER, assets.iconJump);
+        drawButton(RECORD_X, RECORD_Y, "RECORD", Palette.RECORDING, assets.iconRecord);
+        drawButton(SPAWN_X, SPAWN_Y, "ECHO", Palette.UI_TEXT, assets.iconEcho);
 
         // Reset Button
-        drawButton(RESET_X, RESET_Y, "RESET", Palette.HAZARD);
+        drawButton(RESET_X, RESET_Y, "RESET", Palette.HAZARD, assets.iconReset);
 
         // Pause Button
-        drawButton(PAUSE_X, PAUSE_Y, "PAUSE", Palette.UI_DIM);
+        drawButton(PAUSE_X, PAUSE_Y, "PAUSE", Palette.UI_DIM, assets.iconPause);
 
         canvas.end();
     }
 
-    private void drawButton(float x, float y, String label, Color color) {
+    private void drawButton(float x, float y, String label, Color color, Texture icon) {
         canvas.circle(x, y, BUTTON_RADIUS, color, 0.3f);
-        canvas.text(assets.font, label, x, y + 8f, Align.center, Color.WHITE, 0.8f);
+        float iconS = BUTTON_RADIUS * 2 * 0.6f;
+        if (icon != null) {
+            assets.batch.setColor(1, 1, 1, 0.6f);
+            // Position icon above the center
+            assets.batch.draw(icon, x - iconS / 2f, y - iconS * 0.25f, iconS, iconS);
+            assets.batch.setColor(Color.WHITE);
+        }
+        // Position text below the center
+        canvas.text(assets.font, label, x, y - 18f, Align.center, Color.WHITE, 0.9f);
     }
 }
